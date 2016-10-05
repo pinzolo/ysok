@@ -1,6 +1,6 @@
-package main
+package ysok
 
-var cmdSweep = &Command{
+var CmdSweep = &Command{
 	Run:       runSweep,
 	UsageLine: "sweep ",
 	Short:     "",

@@ -9,48 +9,14 @@ import (
 	"os"
 	"strings"
 	"text/template"
+
+	"github.com/pinzolo/ysok"
 )
-
-// A Command is an implementation of a ysok command
-type Command struct {
-	// Run runs the command.
-	// The args are the arguments after the command name.
-	Run func(args []string) int
-
-	// UsageLine is the one-line usage message.
-	// The first word in the line is taken to be the command name.
-	UsageLine string
-
-	// Short is the short description shown in the 'ysok help' output.
-	Short string
-
-	// Long is the long message shown in the 'ysok help <this-command>' output.
-	Long string
-
-	// Flag is a set of flags specific to this command.
-	Flag flag.FlagSet
-}
-
-// Name returns the command's name: the first word in the usage line.
-func (c *Command) Name() string {
-	name := c.UsageLine
-	i := strings.Index(name, " ")
-	if i >= 0 {
-		name = name[:i]
-	}
-	return name
-}
-
-func (c *Command) Usage() {
-	fmt.Fprintf(os.Stderr, "usage: %s\n\n", c.UsageLine)
-	fmt.Fprintf(os.Stderr, "%s\n", strings.TrimSpace(c.Long))
-	os.Exit(2)
-}
 
 // Commands lists the available commands and help topics.
 // The order here is the order in which they are printed by 'ysok help'.
-var commands = []*Command{
-	cmdSweep,
+var commands = []*ysok.Command{
+	ysok.CmdSweep,
 }
 
 func main() {
@@ -84,7 +50,7 @@ func main() {
 	os.Exit(2)
 }
 
-var usageTemplate = `ysok is a tool for 
+var usageTemplate = `ysok is a tool for
 
 Usage:
 
