@@ -52,6 +52,10 @@ func runSweep(args []string) int {
 		errf("トークンを読み込むことが出来ませんでした")
 		return ErrNoToken
 	}
+	if days < 7 {
+		errf("日数は7以上を指定して下さい")
+		return ErrInvalidDays
+	}
 	s := slack.New(getToken())
 	cnt, err := getFileCount(s)
 	if err != nil {
