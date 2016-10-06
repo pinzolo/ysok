@@ -11,15 +11,15 @@ var (
 	// CmdSweep is definition of sweep subcommand.
 	CmdSweep = &Command{
 		Run:       runSweep,
-		UsageLine: "sweep ",
+		UsageLine: "sweep [-t SLACK_TOKEN] [-u SLACK_USER_ID] [-d DAYS_AGO]",
 		Short:     "過去のファイル削除",
 		Long: `過去のファイルを削除します。
 
 Options:
-    -t YOUR_SLACK_TOKEN, --token YOUR_SLACK_TOKEN
+    -t SLACK_TOKEN, --token SLACK_TOKEN
         Slack のトークンを指定します。指定しない場合、環境変数 YSOK_TOKEN が使用されます。
 
-    -u YOUR_SLACK_USER_ID, --user YOUR_SLACK_USER_ID
+    -u SLACK_USER_ID, --user SLACK_USER_ID
         Slack のユーザーIDを指定します。指定しない場合、環境変数 YSOK_USER が使用されます。
 
     -d DAYS_AGO, --days DAYS_AGO
