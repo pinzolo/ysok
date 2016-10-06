@@ -42,28 +42,19 @@ func init() {
 
 // runSweep executes sweep command and return exit code.
 func runSweep(args []string) int {
-	u := getUser()
-	if u == "" {
-		errf("ユーザーIDを読み込むことが出来ませんでした")
-		return ErrNoUser
+	v := validateOptions()
+	if v != 0 {
+		return v
 	}
-	t := getToken()
-	if t == "" {
-		errf("トークンを読み込むことが出来ませんでした")
-		return ErrNoToken
-	}
-	if days < 7 {
-		errf("日数は7以上を指定して下さい")
-		return ErrInvalidDays
-	}
-	s := slack.New(getToken())
-	cnt, err := getFileCount(s)
+
+	api := slack.New(getToken())
+	cnt, err := getFileCount(api)
 	if err != nil {
 		errf(err.Error())
 		return ErrGetFileCount
 	}
 
-	files, err := getFiles(s, cnt)
+	files, err := getFiles(api, cnt)
 	if err != nil {
 		errf(err.Error())
 		return ErrGetFiles
@@ -72,10 +63,26 @@ func runSweep(args []string) int {
 	threshold := time.Now().AddDate(0, 0, days*-1)
 	for _, f := range files {
 		if f.Created.Time().Before(threshold) {
-			rmFile(s, f)
+			rmFile(api, f)
 		}
 	}
 
+	return 0
+}
+
+func validateOptions() int {
+	if getUser() == "" {
+		errf("ユーザーIDを読み込むことが出来ませんでした")
+		return ErrNoUser
+	}
+	if getToken() == "" {
+		errf("トークンを読み込むことが出来ませんでした")
+		return ErrNoToken
+	}
+	if days < 7 {
+		errf("日数は7以上を指定して下さい")
+		return ErrInvalidDays
+	}
 	return 0
 }
 

@@ -37,8 +37,9 @@ func (c *Command) Name() string {
 	return name
 }
 
+// Usage prints usage text.
 func (c *Command) Usage() {
-	fmt.Fprintf(os.Stderr, "usage: %s\n\n", c.UsageLine)
-	fmt.Fprintf(os.Stderr, "%s\n", strings.TrimSpace(c.Long))
+	fmt.Fprintf(ErrWriter, "usage: %s\n\n", c.UsageLine)
+	fmt.Fprintf(ErrWriter, "%s\n", strings.TrimSpace(c.Long))
 	os.Exit(2)
 }
